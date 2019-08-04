@@ -1,7 +1,8 @@
-//扩展dom方法
-$.fn.extend({
+ 
+$.fn.extend({  
     //圆饼图表方法
-    initRoundChart: function (options) {
+    initRoundChart: function (options) { 
+
         var defaults = {
             title: '',
             number: '',
@@ -20,19 +21,24 @@ $.fn.extend({
             //标题
             title: {
                 //text: opts.title + '：' + opts.number,
-                // subtext: '纯属虚构',//副标题
+                text: opts.title,
+                subtext: opts.number,//副标题
                 x: 'center',
                 textStyle: {
-                    color: "#333",
-                    fontSize: 16,
+                    color: "#555",
+                    fontSize: 12,
                     fontWeight: 'normal'
                 },
-                bottom: '90'
-            },
+                subtextStyle: {
+                    color: "#333",
+                    fontSize:14
+                },
+                top: '70'
+            }, 
             tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} ({d}%)",//{a} <br/>{b} : {c} ({d}%) 
-            },
+            },   
             //图例
             legend: {
                 orient: 'horizontal',
@@ -44,13 +50,13 @@ $.fn.extend({
                 },
                 itemWidth: 15,
                 itemHeight: 12,
-                top: '240'
+                top: '190'
             },
             series: [
                 {
                     name: opts.title,
                     type: 'pie',
-                    radius: '55%',
+                    radius: ['30%', '55%'], 
                     center: ['50%', '35%'],
                     data: opts.seriesData,
                     itemStyle: {
@@ -63,9 +69,9 @@ $.fn.extend({
                 }
             ]
         };
-
+        myChart.hideLoading();
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option); 
+        myChart.setOption(option);
     },
     //柱形图表
     initColumnChart: function (options) {
@@ -73,15 +79,15 @@ $.fn.extend({
             title: '',
             subText: '',
             xAxisData: [],
-            rotate: 0,
-            seriesData: [],
+            rotate:0,
+            seriesData: [], 
             legendData: []//图例
         };
         var opts = $.extend(defaults, options);
         if (!$(this)[0]) {
             return false;
-        }
-
+        } 
+        
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init($(this)[0]);
 
@@ -90,44 +96,96 @@ $.fn.extend({
             title: {
                 text: opts.title,
                 subtext: opts.subText,//副标题
-                //x: 'center',
+                x: 'center',
                 textStyle: {
                     color: "#333",
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: 'normal'
-                }
+                }, 
+                //textAlign:'center',
+                subtextStyle: {
+                    color: "#666",
+                    fontSize: 12,
+                    fontWeight: 'normal'
+                },
+                top:'0'
             },
             color: ['#ff6633'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'cross',        // 默认为直线，可选为：'line' | 'shadow' | 'cross'//横纵指示
-                    color: '#f5f5f5'
-                }
+                    label: {
+                        color: '#fff',
+                        backgroundColor: '#ff6634'
+                    },
+                    lineStyle: {
+                        color: '#ffbfaa',
+                        type: 'dashed'
+                    },
+                    crossStyle: {
+                        color: '#ffbfaa',
+                        type:'dashed'
+                    }
+                }, 
             },
             //canvas的位置
             grid: {
                 left: '3%',
-                right: '4%',
+                right: '3%',
                 bottom: '3%',
+                top:'22%',
                 containLabel: true
             },
             xAxis: {
                 type: 'category',
+                //背景横轴css
                 splitLine: {
-                    show: false
-                },
-                borderWidth: 0,
-                borderColor: '#f5f5f5',
+                    show: true,
+                    lineStyle: {
+                        color: '#f5f5f5',
+                        type:'dashed'
+                    }
+                }, 
+                //横轴文字
                 axisLabel: {
                     interval: 0,//横轴信息全部显示
-                    rotate: opts.rotate
+                    rotate: opts.rotate,
+                    color:'#6d6d6d'
+                },
+                //横轴坐标线
+                axisLine: {
+                    lineStyle: {
+                        color: '#f5f5f5',
+                        type: 'dashed'
+                    }
                 },
                 data: opts.xAxisData
             },
             yAxis: [
                 {
-                    type: 'value'
+                    type: 'value',
+                    //背景纵轴css
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#ececec',
+                            type: 'dashed', //solid,dashed,dotted
+                        }
+                    },
+                    //纵轴文字
+                    axisLabel: {
+                        interval: 0,//横轴信息全部显示 
+                        color: '#6d6d6d'
+                    },
+                    //纵轴坐标线
+                    axisLine: {
+                        lineStyle: {
+                            show:true,
+                            color: '#f5f5f5',
+                            type: 'dashed'
+                        }
+                    },
                 }
             ],
             legend: {
@@ -135,14 +193,12 @@ $.fn.extend({
             },
             series: opts.seriesData
         };
-
+        myChart.hideLoading();
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     }
-
+    
 });
-
-//扩展$元素方法
 $.extend({
     //遍历月份
     monthData: function () {
@@ -182,7 +238,7 @@ $.extend({
             type: 'line',
             stack: '',
             data: [],
-            barWidth: 30,//默认柱子宽度30px
+            barWidth:Number,//默认柱子宽度30px
             color: ''
         };
         var legendData = [];
@@ -197,6 +253,13 @@ $.extend({
                 stack: ops.stack,
                 data: ops.data,
                 barWidth: ops.barWidth,
+                label: {
+                    normal: {
+                        show: true,
+                        color: '#ff6634',
+                        position:'top'
+                    }
+                },
                 itemStyle: {
                     color: ops.color
                 }
@@ -212,25 +275,27 @@ $.extend({
         var date = new Date;
         var nowYear = date.getFullYear();
         var yearList = [];
-        for (var i = 2013; i < nowYear + 1; i++) {
+        for (var i = 2013; i < nowYear+1; i++) {
             yearList.push(i);
         }
         return yearList;
     },
-    //图表自适应
-    initChartResize: function (id) {
+    //图表自适应,并且默认显示loading图标 
+    initChartResize: function (id) { 
         var chart = echarts.init($('#' + id + '')[0]);
+        // chart.showLoading({
+        //     text: '正在加载中'
+        // });
         $(window).resize(function () {
             chart.resize();
         });
-    },
-
-})
+    }
+});
 
 $(function () {
     //图表自适应,凡是有chartSize命名的图表都自适应
     var dom = $('.chartSize'); 
     for (var i = 0; i < dom.length; i++) { 
         $.initChartResize(dom[i].id);
-    }
+    } 
 });

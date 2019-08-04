@@ -6,6 +6,9 @@ var ChartViewModel = function(){
         that.loadRound();
         //加载柱形
         that.loadColumn();
+        //加载线形
+         that.loadColumn02();
+         that.loadColumn03();
     },
     that.loadRound = function(){
         var data = [
@@ -26,7 +29,7 @@ var ChartViewModel = function(){
             }
         ];
         $('#chart_01').initRoundChart({
-            title: "",
+            title: "圆饼图",
             legendData: $.initChartRoundData(data).legendData,
             seriesData: $.initChartRoundData(data).seriesData
         }); 
@@ -34,20 +37,65 @@ var ChartViewModel = function(){
     that.loadColumn = function(){
         var data = [
             {
-                name:'01',
+                name:'类型一',
                 type:'bar',
-                color:'#4285f4',
+                color:'#4285f4', 
                 data:[12,22,33]
             },
             {
-                name:'02',
-                type:'line',
-                color:'#e94335',
+                name:'类型二',
+                type:'bar',
+                color:'#e94335', 
                 data:[12,22,40]
             }
         ];
         $('#chart_02').initColumnChart({
             title: "",
+            xAxisData:$.initYearData(),
+            legendData:$.initChartColumnData(data).legendData,
+            seriesData: $.initChartColumnData(data).seriesData
+        }); 
+    },
+    that.loadColumn02 = function(){
+        var data = [
+            {
+                name:'类型一',
+                type:'line',
+                color:'#4285f4',
+                data:[12,22,33]
+            },
+            {
+                name:'类型二',
+                type:'line',
+                color:'#e94335',
+                data:[12,22,40]
+            }
+        ];
+        $('#chart_03').initColumnChart({
+            title: "",
+            xAxisData:$.initYearData(),
+            legendData: $.initChartColumnData(data).legendData,
+            seriesData: $.initChartColumnData(data).seriesData
+        }); 
+    },
+    that.loadColumn03 = function(){
+        var data = [
+            {
+                name:'类型一',
+                type:'line',
+                color:'#4285f4',
+                data:[12,22,33]
+            },
+            {
+                name:'类型二',
+                type:'bar',
+                color:'#e94335',
+                data:[18,10,70]
+            }
+        ];
+        $('#chart_04').initColumnChart({
+            title: "",
+            xAxisData:$.initYearData(),
             legendData: $.initChartColumnData(data).legendData,
             seriesData: $.initChartColumnData(data).seriesData
         }); 
